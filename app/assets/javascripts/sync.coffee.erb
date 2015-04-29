@@ -7,6 +7,7 @@ $ = jQuery
   FAYE_HOST: "<%= Sync.server %>"
   PUSHER_API_KEY: "<%= Sync.api_key %>"
   CLIENT_ADAPTER: "<%= Sync.adapter %>"
+  client_instance: null
 
   init: ->
     return unless Sync[@CLIENT_ADAPTER]
@@ -105,7 +106,7 @@ class Sync.Faye extends Sync.Adapter
     !!window.Faye
 
   connect: ->
-    @client = new window.Faye.Client(Sync.FAYE_HOST)
+    @client = Sync.client_instance || new window.Faye.Client(Sync.FAYE_HOST)
 
   isConnected: -> @client?.getState() is "CONNECTED"
 
@@ -128,7 +129,7 @@ class Sync.Pusher extends Sync.Adapter
     !!window.Pusher
 
   connect: ->
-    @client = new window.Pusher(Sync.PUSHER_API_KEY)
+    @client = Sync.client_instance || new window.Pusher(Sync.PUSHER_API_KEY)
 
   isConnected: -> @client?.connection.state is "connected"
 
