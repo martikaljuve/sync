@@ -158,8 +158,8 @@ module Sync
           @sync_touches ||= []
         
           after_commit :prepare_sync_touches, on: :create, if: -> { Sync::Model.enabled? }
-          after_update :prepare_sync_touches, on: :update, if: -> { Sync::Model.enabled? }
-          after_destroy :prepare_sync_touches, on: :destroy, if: -> { Sync::Model.enabled? }
+          after_commit :prepare_sync_touches, on: :update, if: -> { Sync::Model.enabled? }
+          after_commit :prepare_sync_touches, on: :destroy, if: -> { Sync::Model.enabled? }
         end
 
         options = args.extract_options!
